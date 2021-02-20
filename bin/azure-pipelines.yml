@@ -1,0 +1,31 @@
+trigger:
+- '*'
+
+pool:
+  vmImage: 'ubuntu-20.04'
+
+variables:
+  buildConfiguration: 'Release'
+  releaseBranchName: 'master'
+
+schedules:
+- cron: '0 3 * * *'
+  displayName: Deploy every day at 3 A.M.
+  branches:
+    include:
+    - master
+  always: false 
+
+stages:
+
+- stage: 'Build'
+  displayName: 'Build the back-end app'
+  jobs:
+  - job: Install_Java11
+    displayName: Install_Java11
+    steps:
+    - task: JavaToolInstaller@0
+      inputs:
+        versionSpec: '11'
+        jdkArchitectureOption: 'x64'
+        jdkSourceOption: 'PreInstalled'
